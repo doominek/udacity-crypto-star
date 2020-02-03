@@ -87,9 +87,35 @@ it('lets 2 users exchange stars', async () => {
 });
 
 it('lets a user transfer a star', async () => {
+    const instance = await StarNotary.deployed();
+
     // 1. create a Star with different tokenId
+    let starId = 7;
+    await instance.createStar('Star#6', starId, { from: user1 });
+
     // 2. use the transferStar function implemented in the Smart Contract
+    await instance.transferStar(user2, starId, { from: user1 });
+
     // 3. Verify the star owner changed.
+    const currentOwner = await instance.ownerOf(starId);
+    assert.equal(currentOwner, user2);
+});
+
+it('does not let a user transfer a star if he does not own it', async () => {
+    const instance = await StarNotary.deployed();
+
+    // 1. create a Star with different tokenId
+    let starId = 8;
+    await instance.createStar('Star#6', starId, { from: user1 });
+
+    // 2. use the transferStar function implemented in the Smart Contract
+    try {
+        await instance.transferStar(user2, starId, { from: user2 });
+        assert(false);
+    } catch (e) {
+        assert(e.reason, "You can't transfer the Star you don't own");
+    }
+
 });
 
 it('lookUptokenIdToStarInfo test', async () => {
