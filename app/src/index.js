@@ -49,10 +49,14 @@ const App = {
 
     try {
       lookUpBtn.disabled = true;
-      const { lookUptokenIdToStarInfo } = this.meta.methods;
+      const { lookUptokenIdToStarInfo, ownerOf } = this.meta.methods;
       const id = document.getElementById("lookid").value;
-      const name = await lookUptokenIdToStarInfo(id).call();
-      const message = name ? `The name of the Star with ID: ${id} is <b>${name}</b>` : `Star with ID: ${id} not found`;
+
+      const [name, owner] =
+          await Promise.all([ lookUptokenIdToStarInfo(id).call(), ownerOf(id).call() ]);
+
+      const message = name ? `The name of the Star with ID: ${id} is <b>${name}</b>. Owner is ${owner}.`
+          : `Star with ID: ${id} not found`;
       App.setStatus(message);
     } finally {
       lookUpBtn.disabled = false;
