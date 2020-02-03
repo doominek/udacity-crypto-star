@@ -104,9 +104,9 @@ it('does not let a user exchange a star if he does not own it', async () => {
     const instance = await StarNotary.deployed();
 
     const star1Id = 12;
-    await instance.createStar('Star#10', star1Id, { from: user1 });
+    await instance.createStar('Star#12', star1Id, { from: user1 });
     const star2Id = 13;
-    await instance.createStar('Star#11', star2Id, { from: user2 });
+    await instance.createStar('Star#13', star2Id, { from: user2 });
 
     try {
         await instance.exchangeStars(star2Id, star1Id, { from: user3 });
@@ -121,7 +121,7 @@ it('lets a user transfer a star', async () => {
 
     // 1. create a Star with different tokenId
     const starId = 7;
-    await instance.createStar('Star#6', starId, { from: user1 });
+    await instance.createStar('Star#7', starId, { from: user1 });
 
     // 2. use the transferStar function implemented in the Smart Contract
     await instance.transferStar(user2, starId, { from: user1 });
@@ -136,7 +136,7 @@ it('does not let a user transfer a star if he does not own it', async () => {
 
     // 1. create a Star with different tokenId
     const starId = 8;
-    await instance.createStar('Star#6', starId, { from: user1 });
+    await instance.createStar('Star#8', starId, { from: user1 });
 
     // 2. use the transferStar function implemented in the Smart Contract
     try {
