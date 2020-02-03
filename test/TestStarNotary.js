@@ -1,11 +1,11 @@
 const StarNotary = artifacts.require("StarNotary");
 
-var accounts;
-var owner;
+let accounts;
+let owner, user1, user2;
 
 contract('StarNotary', (accs) => {
     accounts = accs;
-    owner = accounts[0];
+    [owner, user1, user2] = accounts;
 });
 
 it('can Create a Star', async() => {
@@ -17,7 +17,6 @@ it('can Create a Star', async() => {
 
 it('lets user1 put up their star for sale', async() => {
     let instance = await StarNotary.deployed();
-    let user1 = accounts[1];
     let starId = 2;
     let starPrice = web3.utils.toWei(".01", "ether");
     await instance.createStar('awesome star', starId, {from: user1});
@@ -27,8 +26,6 @@ it('lets user1 put up their star for sale', async() => {
 
 it('lets user1 get the funds after the sale', async() => {
     let instance = await StarNotary.deployed();
-    let user1 = accounts[1];
-    let user2 = accounts[2];
     let starId = 3;
     let starPrice = web3.utils.toWei(".01", "ether");
     let balance = web3.utils.toWei(".05", "ether");
@@ -44,8 +41,6 @@ it('lets user1 get the funds after the sale', async() => {
 
 it('lets user2 buy a star, if it is put up for sale', async() => {
     let instance = await StarNotary.deployed();
-    let user1 = accounts[1];
-    let user2 = accounts[2];
     let starId = 4;
     let starPrice = web3.utils.toWei(".01", "ether");
     let balance = web3.utils.toWei(".05", "ether");
@@ -58,8 +53,6 @@ it('lets user2 buy a star, if it is put up for sale', async() => {
 
 it('lets user2 buy a star and decreases its balance in ether', async() => {
     let instance = await StarNotary.deployed();
-    let user1 = accounts[1];
-    let user2 = accounts[2];
     let starId = 5;
     let starPrice = web3.utils.toWei(".01", "ether");
     let balance = web3.utils.toWei(".05", "ether");
@@ -80,16 +73,6 @@ it('can add the star name and star symbol properly', async() => {
     const instance = await StarNotary.deployed();
 
     //2. Call the name and symbol properties in your Smart Contract and compare with the name and symbol provided
-    const name = await instance.name();
-    const symbol = await instance.symbol();
-
-    assert.equal(name, "Domin Crypto Star");
-    assert.equal(symbol, "DCS");
-});
-
-it('token should have set name and symbol', async() => {
-    const instance = await StarNotary.deployed();
-
     const name = await instance.name();
     const symbol = await instance.symbol();
 
